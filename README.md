@@ -5,23 +5,31 @@ A comprehensive, production-ready marketing automation platform built with Node.
 ## Features
 
 ### Core Features
-- **Email Campaign Management**: Create, schedule, and send email campaigns with drag-and-drop builder
+- **Email Campaign Management**: Create, schedule, and send email campaigns with template support
 - **Lead Management & Segmentation**: Advanced contact management with custom fields, tags, and dynamic segmentation
 - **Automation Workflows**: Visual workflow builder with triggers and actions for marketing automation
-- **Analytics Dashboard**: Real-time analytics with open rates, click rates, and conversion tracking
-- **A/B Testing**: Test different email variations to optimize campaign performance
-- **Multi-tenant Architecture**: Fully isolated organization data with role-based access control
-- **Template Library**: Pre-built email templates with customization options
-- **Email Tracking**: Track opens, clicks, bounces, and unsubscribes automatically
+- **Advanced Analytics**: Real-time analytics dashboard with campaign performance, contact engagement, and workflow metrics
+- **Dynamic Segments**: Create intelligent contact segments with multiple criteria (tags, lead score, domain, activity)
+- **Template Library**: Pre-built email templates with customization and duplication
+- **Email Tracking**: Track opens, clicks, bounces, and unsubscribes automatically with pixel tracking
+- **Webhook Integrations**: Connect with external services via webhooks for event-based integrations
+- **Bulk Operations**: Perform bulk actions on contacts (update, tag, delete, export, unsubscribe)
+- **Multi-tenant Architecture**: Fully isolated organization data with role-based access control (admin, user, viewer)
+- **Data Export**: Export contacts and reports in CSV/JSON formats
+- **Contact Engagement Scoring**: Automatic lead scoring based on email interactions
 
 ### Technical Features
-- RESTful API with JWT authentication
-- PostgreSQL database with Sequelize ORM
+- RESTful API with JWT authentication and role-based authorization
+- PostgreSQL database with Sequelize ORM and optimized indexing
 - Redis for job queuing and caching
-- Email service integration (SMTP)
-- Rate limiting and security headers
+- Email service integration (SMTP) with Nodemailer
+- Webhook system with signature verification
+- Rate limiting and security headers (Helmet.js)
+- Input validation and sanitization
 - Responsive UI with no framework dependencies
+- Advanced filtering and search capabilities
 - Real-time email tracking with pixel tracking
+- CSV/JSON export functionality
 
 ## Tech Stack
 
@@ -259,6 +267,176 @@ Content-Type: application/json
 ```http
 POST /api/workflows/:id/toggle
 Authorization: Bearer <token>
+```
+
+### Analytics
+
+**Get Dashboard Stats**
+```http
+GET /api/analytics/dashboard?startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer <token>
+```
+
+**Get Campaign Analytics**
+```http
+GET /api/analytics/campaigns/:id
+Authorization: Bearer <token>
+```
+
+**Get Contact Engagement**
+```http
+GET /api/analytics/contacts/:id
+Authorization: Bearer <token>
+```
+
+**Export Report**
+```http
+GET /api/analytics/export?type=contacts&format=csv
+Authorization: Bearer <token>
+```
+
+### Segments
+
+**Create Segment**
+```http
+POST /api/segments
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "name": "VIP Customers",
+  "description": "High-value engaged customers",
+  "criteria": {
+    "tags": ["vip", "customer"],
+    "leadScoreMin": 100,
+    "status": "subscribed"
+  },
+  "isDynamic": true
+}
+```
+
+**Test Segment**
+```http
+POST /api/segments/test
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "criteria": {
+    "tags": ["vip"],
+    "leadScoreMin": 50
+  }
+}
+```
+
+**Get Segment Contacts**
+```http
+GET /api/segments/:id/contacts
+Authorization: Bearer <token>
+```
+
+### Templates
+
+**Create Template**
+```http
+POST /api/templates
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "name": "Welcome Email",
+  "category": "welcome",
+  "htmlContent": "<h1>Welcome {{firstName}}!</h1>",
+  "textContent": "Welcome!"
+}
+```
+
+**Duplicate Template**
+```http
+POST /api/templates/:id/duplicate
+Authorization: Bearer <token>
+```
+
+### Webhooks
+
+**Create Webhook**
+```http
+POST /api/webhooks
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "url": "https://your-app.com/webhook",
+  "events": ["contact.created", "email.opened"],
+  "description": "Send events to my app",
+  "isActive": true
+}
+```
+
+**Test Webhook**
+```http
+POST /api/webhooks/:id/test
+Authorization: Bearer <token>
+```
+
+**Get Available Events**
+```http
+GET /api/webhooks/events
+Authorization: Bearer <token>
+```
+
+### Bulk Operations
+
+**Bulk Update Contacts**
+```http
+POST /api/bulk/contacts/update
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contactIds": ["uuid1", "uuid2"],
+  "updates": {
+    "company": "New Company Name"
+  }
+}
+```
+
+**Bulk Add Tags**
+```http
+POST /api/bulk/contacts/tags/add
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contactIds": ["uuid1", "uuid2"],
+  "tags": ["customer", "vip"]
+}
+```
+
+**Bulk Export Contacts**
+```http
+POST /api/bulk/contacts/export
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contactIds": ["uuid1", "uuid2"],
+  "format": "csv",
+  "fields": ["email", "firstName", "lastName", "company"]
+}
+```
+
+**Bulk Update Lead Score**
+```http
+POST /api/bulk/contacts/lead-score
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contactIds": ["uuid1", "uuid2"],
+  "operation": "add",
+  "value": 10
+}
 ```
 
 ## Database Schema

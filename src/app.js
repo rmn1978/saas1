@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage.js';
 import { CampaignsPage } from './pages/CampaignsPage.js';
 import { ContactsPage } from './pages/ContactsPage.js';
 import { WorkflowsPage } from './pages/WorkflowsPage.js';
+import { SegmentsPage } from './pages/SegmentsPage.js';
 
 export class App {
   constructor() {
@@ -74,6 +75,14 @@ export class App {
         return;
       }
       this.renderPage(new WorkflowsPage(this.authService, this.router));
+    });
+
+    this.router.addRoute('/segments', () => {
+      if (!this.authService.getToken()) {
+        this.router.navigate('/login');
+        return;
+      }
+      this.renderPage(new SegmentsPage(this.authService, this.router));
     });
   }
 
