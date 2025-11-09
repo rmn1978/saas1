@@ -1,0 +1,48 @@
+{
+  "name": "marketing-automation-saas",
+  "version": "1.0.0",
+  "description": "Professional Marketing Automation SaaS Platform",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server/index.js",
+    "client": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "db:migrate": "node server/database/migrate.js",
+    "test": "jest"
+  },
+  "keywords": ["marketing", "automation", "saas", "email-campaigns"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.2",
+    "nodemailer": "^6.9.7",
+    "bull": "^4.12.0",
+    "redis": "^4.6.11",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1",
+    "handlebars": "^4.7.8",
+    "axios": "^1.6.2",
+    "chart.js": "^4.4.1",
+    "date-fns": "^3.0.6"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8",
+    "nodemon": "^3.0.2",
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "@vitejs/plugin-react": "^4.2.1"
+  }
+}
