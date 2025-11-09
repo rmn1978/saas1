@@ -7,6 +7,7 @@ import EmailEvent from './EmailEvent.js';
 import Workflow from './Workflow.js';
 import Segment from './Segment.js';
 import Template from './Template.js';
+import ScheduledReport from './ScheduledReport.js';
 
 // Define associations
 Organization.hasMany(User, { foreignKey: 'organizationId', as: 'users' });
@@ -36,6 +37,9 @@ Segment.belongsTo(Organization, { foreignKey: 'organizationId', as: 'organizatio
 Organization.hasMany(Template, { foreignKey: 'organizationId', as: 'templates' });
 Template.belongsTo(Organization, { foreignKey: 'organizationId', as: 'organization' });
 
+Organization.hasMany(ScheduledReport, { foreignKey: 'organizationId', as: 'scheduledReports' });
+ScheduledReport.belongsTo(Organization, { foreignKey: 'organizationId', as: 'organization' });
+
 // Sync database
 const syncDatabase = async () => {
   try {
@@ -61,5 +65,6 @@ export {
   Workflow,
   Segment,
   Template,
+  ScheduledReport,
   syncDatabase
 };

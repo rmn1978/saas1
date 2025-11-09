@@ -80,6 +80,10 @@ const Campaign = sequelize.define('Campaign', {
       unsubscribed: 0,
       complained: 0
     }
+  },
+  bouncedCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }, {
   timestamps: true

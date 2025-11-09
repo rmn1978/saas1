@@ -55,6 +55,22 @@ const Contact = sequelize.define('Contact', {
   },
   lastActivityAt: {
     type: DataTypes.DATE
+  },
+  bounceCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  bounceReason: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  lastBounceAt: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  metadata: {
+    type: DataTypes.JSONB,
+    defaultValue: {}
   }
 }, {
   timestamps: true,
@@ -62,6 +78,12 @@ const Contact = sequelize.define('Contact', {
     {
       unique: true,
       fields: ['email', 'organizationId']
+    },
+    {
+      fields: ['status']
+    },
+    {
+      fields: ['bounceCount']
     }
   ]
 });

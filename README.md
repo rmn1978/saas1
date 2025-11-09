@@ -17,6 +17,12 @@ A comprehensive, production-ready marketing automation platform built with Node.
 - **Multi-tenant Architecture**: Fully isolated organization data with role-based access control (admin, user, viewer)
 - **Data Export**: Export contacts and reports in CSV/JSON formats
 - **Contact Engagement Scoring**: Automatic lead scoring based on email interactions
+- **Email Validation**: Advanced email validation with DNS MX checking, disposable email detection, and typo correction
+- **Scheduled Reports**: Automated report generation and delivery (daily, weekly, monthly)
+- **Email Preview & Testing**: Preview emails with variable substitution and send test emails
+- **Bounce Handling**: Automatic bounce detection and contact status management
+- **Unsubscribe Management**: One-click unsubscribe with preference management
+- **Organization-based Rate Limiting**: Plan-based API rate limiting per organization
 
 ### Technical Features
 - RESTful API with JWT authentication and role-based authorization
@@ -439,6 +445,136 @@ Content-Type: application/json
 }
 ```
 
+### Scheduled Reports
+
+**Create Scheduled Report**
+```http
+POST /api/reports/scheduled
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "name": "Weekly Performance Report",
+  "reportType": "campaign_performance",
+  "frequency": "weekly",
+  "format": "pdf",
+  "recipients": ["admin@example.com"],
+  "filters": {
+    "startDate": "2024-01-01"
+  }
+}
+```
+
+**Get Scheduled Reports**
+```http
+GET /api/reports/scheduled
+Authorization: Bearer <token>
+```
+
+**Run Report Now**
+```http
+POST /api/reports/scheduled/:id/run
+Authorization: Bearer <token>
+```
+
+### Email Preview & Validation
+
+**Preview Email Template**
+```http
+POST /api/email/preview/template
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "templateId": "template-uuid",
+  "contactId": "contact-uuid"
+}
+```
+
+**Preview Campaign**
+```http
+POST /api/email/preview/campaign/:id
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "contactId": "contact-uuid"
+}
+```
+
+**Send Test Email**
+```http
+POST /api/email/preview/send-test
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "templateId": "template-uuid",
+  "testEmail": "test@example.com",
+  "customVariables": {
+    "firstName": "John"
+  }
+}
+```
+
+**Validate Email Content**
+```http
+POST /api/email/validate
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "htmlContent": "<h1>Hello {{firstName}}!</h1>",
+  "textContent": "Hello!"
+}
+```
+
+### Bounce Handling
+
+**Get Bounce Statistics**
+```http
+GET /api/bounces/stats?startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer <token>
+```
+
+**Get Bounced Contacts**
+```http
+GET /api/bounces/contacts?page=1&limit=50
+Authorization: Bearer <token>
+```
+
+**Reset Contact Bounce Count**
+```http
+POST /api/bounces/contacts/:id/reset
+Authorization: Bearer <token>
+```
+
+**Webhook for Bounce Notifications**
+```http
+POST /api/bounces/webhook?provider=ses
+Content-Type: application/json
+
+{
+  "email": "bounced@example.com",
+  "bounceType": "hard",
+  "bounceReason": "Mailbox does not exist"
+}
+```
+
+**Manual Bounce Report**
+```http
+POST /api/bounces/report
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "bounceType": "hard",
+  "bounceReason": "Invalid mailbox",
+  "campaignId": "campaign-uuid"
+}
+```
+
 ## Database Schema
 
 ### Key Models
@@ -556,6 +692,17 @@ Track key metrics:
 
 ## Roadmap
 
+### Completed Features
+- [x] Email validation and verification
+- [x] Scheduled reports
+- [x] Email preview and testing
+- [x] Bounce handling
+- [x] Unsubscribe management
+- [x] Organization-based rate limiting
+- [x] Webhook support
+- [x] Template library
+
+### Upcoming Features
 - [ ] Drag-and-drop email builder
 - [ ] Advanced segmentation with AND/OR logic
 - [ ] SMS campaigns
@@ -563,9 +710,10 @@ Track key metrics:
 - [ ] Landing page builder
 - [ ] Form builder
 - [ ] CRM integrations (Salesforce, HubSpot)
-- [ ] Webhook support
-- [ ] Custom reporting dashboard
+- [ ] Advanced dashboard with charts
 - [ ] Mobile app
+- [ ] A/B testing for campaigns
+- [ ] Marketing attribution tracking
 
 ## Contributing
 
